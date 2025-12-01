@@ -3,7 +3,6 @@ package com.leojcl.recruitmentsystem.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -13,7 +12,7 @@ import java.util.List;
 public class UsersType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userTypeId;
 
     private String userTypeName;

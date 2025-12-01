@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 @Table(name = "users")
@@ -14,7 +13,7 @@ import java.util.Date;
 @Getter
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
     @Column(unique = true)
@@ -29,7 +28,7 @@ public class Users {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date registrationDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
     private UsersType userTypeId;
 

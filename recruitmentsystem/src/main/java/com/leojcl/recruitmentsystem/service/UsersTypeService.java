@@ -20,4 +20,5 @@ public class UsersTypeService {
     public List<UsersType> getAll(){
         return usersTypeRepository.findAll();
     }
+
 }

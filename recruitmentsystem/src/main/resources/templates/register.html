@@ -1,198 +1,131 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <title>Sign Up | hotdevjobs.com</title>
-
-    <!-- Bootstrap -->
-    <link th:rel="stylesheet"
-          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-
-    <!-- Icons, custom CSS -->
-    <link rel="stylesheet" type="text/css" media="all"
-          th:href="@{/css/font-awesome.min.css}"/>
-
-    <link rel="stylesheet" type="text/css" media="all"
-          th:href="@{/css/styles.css}"/>
-
-    <link href="https://fonts.googleapis.com/css?family=Montserrat"
-          rel="stylesheet"/>
+    <link
+            th:rel="stylesheet"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            media="all"
+            th:href="@{/css/font-awesome.min.css}"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            media="all"
+            th:href="@{/css/styles.css}"
+    />
+    <link
+            href="https://fonts.googleapis.com/css?family=Montserrat"
+            rel="stylesheet"
+    />
+    <meta charset="ISO-8859-1"/>
+    <title>Sign Up</title>
 </head>
 
 <body>
-<main class="content hidden-overflow">
-    <div class="container-fluid">
-        <div class="row min-vh-100">
-
-            <!-- LEFT: Branding / background image -->
-            <div class="col-lg-6 d-none d-lg-flex coffee_mug_background">
-                <div class="w-100 d-flex flex-column justify-content-between">
-                    <!-- Logo -->
-                    <header class="mt-4 pt-3 ms-5 ps-4">
-                        <h2 class="logo text-white mb-0">
-                            hotdevjobs <span class="logo_com">.com</span>
-                        </h2>
-                    </header>
-
-                    <!-- Optional tagline -->
-                    <section class="mb-5 pb-4 ms-5 ps-4 text-white">
-                        <h3 class="h4 fw-semibold mb-2">
-                            Find your next hot dev job
-                        </h3>
-                        <p class="mb-0 small opacity-75">
-                            Join our community of developers and land your dream role faster.
-                        </p>
-                    </section>
-                </div>
+<section class="content hidden-overflow">
+    <div class="row">
+        <div class="col-6 coffee_mug_background">
+            <div class="logo_left mt-3 pt-4 ms-5 pl-5">
+                <h2 class="logo" style="color: white">
+                    hotdevjobs <span class="logo_com">.com</span>
+                </h2>
             </div>
-
-            <!-- RIGHT: Sign up card -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-light">
-                <div class="w-100 px-3 px-md-4 px-xl-5 py-5">
-
-                    <!-- Heading + subtitle -->
-                    <header class="text-center mb-4">
-                        <h1 class="heading_font fw-bold mb-2">
-                            Create your account
+        </div>
+        <div class="col-6">
+            <div class="top-margin">
+                <div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <h1 class="heading_font font-weight-bold">
+                            Create User Account
                         </h1>
-                        <p class="text-muted mb-0">
-                            Sign up to start applying for the hottest developer jobs.
-                        </p>
-                    </header>
-
-                    <!-- FORM CARD -->
+                    </div>
                     <div class="myForm">
-                        <div class="card shadow-lg border-0 rounded-4">
-                            <div class="card-body p-4 p-md-5">
+                        <form
+                                th:action="@{/register/new}"
+                                th:object="${user}"
+                                method="post"
+                        >
+                            <!-- Error message display -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div th:if="${error}" class="alert alert-danger" role="alert">
+                                            <p th:text="${error}">
 
-                                <form th:action="@{/register/new}"
-                                      th:object="${user}"
-                                      method="post"
-                                      class="needs-validation"
-                                      novalidate>
-
-                                    <!-- Email -->
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label fw-semibold">
-                                            Email
-                                        </label>
-                                        <input id="email"
-                                               name="email"
-                                               th:field="*{email}"
-                                               type="email"
-                                               placeholder="you@example.com"
-                                               class="form-control form-control-lg"
-                                               required/>
-                                        <div class="invalid-feedback">
-                                            Please enter a valid email address.
-                                        </div>
-                                        <!-- Server-side error nếu có -->
-                                        <div class="text-danger small mt-1"
-                                             th:if="${#fields.hasErrors('email')}"
-                                             th:errors="*{email}">
+                                            </p>
                                         </div>
                                     </div>
-
-                                    <!-- Password -->
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label fw-semibold">
-                                            Password
-                                        </label>
-                                        <input id="password"
-                                               name="password"
-                                               th:field="*{password}"
-                                               type="password"
-                                               minlength="8"
-                                               placeholder="Minimum 8 characters"
-                                               class="form-control form-control-lg"
-                                               required/>
-                                        <div class="invalid-feedback">
-                                            Password must be at least 8 characters.
-                                        </div>
-                                        <div class="text-danger small mt-1"
-                                             th:if="${#fields.hasErrors('password')}"
-                                             th:errors="*{password}">
+                                </div>
+                            </div>
+                            <div class="box-body bozero mx2p">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input
+                                                    placeholder="Email"
+                                                    name="email"
+                                                    th:field="*{email}"
+                                                    type="email"
+                                                    style="width: 100%"
+                                                    class="form-control"
+                                                    required
+                                            />
                                         </div>
                                     </div>
-
-                                    <!-- User Type -->
-                                    <div class="mb-4">
-                                        <label for="userTypeId" class="form-label fw-semibold">
-                                            User type
-                                        </label>
-                                        <select id="userTypeId"
-                                                class="form-control form-control-lg"
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input
+                                                    min="8"
+                                                    placeholder="Password"
+                                                    name="password"
+                                                    th:field="*{password}"
+                                                    type="password"
+                                                    class="form-control pwd"
+                                                    required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <select
+                                                required
+                                                class="form-control"
                                                 th:field="*{userTypeId}"
-                                                required>
-                                            <option value="" disabled selected hidden>
-                                                Select your user type
-                                            </option>
-                                            <th:block th:each="userType : ${getAllTypes}">
-                                                <option th:text="${userType.userTypeName}"
-                                                        th:value="${userType.userTypeId}">
-                                                </option>
+                                        >
+                                            <th:block th:each="userType :${getAllTypes}">
+                                                <option
+                                                        th:text="${userType.userTypeName}"
+                                                        th:value="${userType.userTypeId}"
+                                                ></option>
                                             </th:block>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Please select a user type.
-                                        </div>
-                                        <div class="text-danger small mt-1"
-                                             th:if="${#fields.hasErrors('userTypeId')}"
-                                             th:errors="*{userTypeId}">
-                                        </div>
                                     </div>
-
-                                    <!-- Submit -->
-                                    <div class="d-grid">
-                                        <button type="submit"
-                                                class="myBtn py-3 fw-semibold rounded-3">
-                                            Create account
-                                        </button>
-                                    </div>
-
-                                    <!-- Already have account -->
-                                    <p class="text-center text-muted mt-3 mb-0 small">
-                                        Already have an account?
-                                        <a th:href="@{/login}" class="text-decoration-none">
-                                            Log in
-                                        </a>
-                                    </p>
-
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                    </div> <!-- /myForm -->
-
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="form-group mt-5 col-md-12">
+                                        <button type="submit" class="myBtn py-3">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
-
-<!-- JS: jQuery + Bootstrap -->
-<script type="text/javascript"
-        th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-        th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-<script>
-    // Bootstrap form validation
-    (function () {
-        'use strict';
-        const forms = document.querySelectorAll('.needs-validation');
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-    })();
-</script>
+</section>
 </body>
+
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 </html>
