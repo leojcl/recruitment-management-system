@@ -30,18 +30,18 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
-    private UsersType userTypeId;
+    private UsersType userType;
 
     public Users() {
     }
 
-    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
+    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userType) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
         this.registrationDate = registrationDate;
-        this.userTypeId = userTypeId;
+        this.userType = userType;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Users {
                 ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 ", registrationDate=" + registrationDate +
-                ", userTypeId=" + userTypeId +
+                ", userTypeId=" + userType +
                 '}';
     }
 }

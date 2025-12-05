@@ -4,11 +4,19 @@ import com.leojcl.recruitmentsystem.entity.Users;
 import com.leojcl.recruitmentsystem.entity.UsersType;
 import com.leojcl.recruitmentsystem.service.UserService;
 import com.leojcl.recruitmentsystem.service.UsersTypeService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -37,21 +45,40 @@ public class UsersController {
     }
 
     @PostMapping("/register/new")
-    public String userRegisttration(@Valid Users users, Model model){
+    public String userRegistration(@Valid @ModelAttribute("user") Users users, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors()){
+            populateModelWithUserTypes(model);
+            return "register";
+        }
 
         Optional<Users> optionalUsers = userService.getUserByEmail(users.getEmail());
 
         if(optionalUsers.isPresent()){
             model.addAttribute("error", "Email already registered, try to login or register with other mail.");
-            List<UsersType> userTypes = usersTypeService.getAll();
-            model.addAttribute("GetAllTypes", userTypes);
-            model.addAttribute("user", new Users());
-
-            return "Register";
+            populateModelWithUserTypes(model);
+            return "register";
         }
         userService.addNew(users);
-        return "dashboard";
+        return "redirect:/dashboard";
+    }
+    public void populateModelWithUserTypes(Model model){
+        List<UsersType> usersTypes = usersTypeService.getAll();
+        model.addAttribute("getAllTypes", usersTypes);
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response){
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if(authentication !=null){
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect: /";
+    }
 
 }

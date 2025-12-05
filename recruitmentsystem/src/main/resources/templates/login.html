@@ -1,6 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link
+            rel="stylesheet"
+            type="text/css"
+            media="all"
+            th:href="@{/css/styles.css}"/>
     <link
             th:rel="stylesheet"
             th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
@@ -17,79 +23,62 @@
     <link
             href="https://fonts.googleapis.com/css?family=Montserrat"
             rel="stylesheet"/>
-    <meta charset="ISO-8859-1"/>
-    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
     <style>
-        .register-layout {
+        .login-layout {
             display: flex;
             min-height: 100vh;
             width: 100%;
         }
 
-        .register-left,
-        .register-right {
+        .login-left,
+        .login-right {
             flex: 1;
         }
 
-        .register-right-inner {
+        .login-right-inner {
             max-width: 420px;
             margin: 0 auto;
         }
     </style>
-
+    <meta charset="ISO-8859-1" />
+    <title>Login</title>
 </head>
+
 <body>
 <section class="content hidden-overflow">
-    <div class="register-layout">
-
-        <!-- BÊN TRÁI -->
-        <div class="register-left coffee_mug_background">
+    <div class="login-layout">
+        <div class="login-left coffee_mug_background">
             <div class="logo_left mt-3 pt-4 ms-5 pl-5">
                 <h2 class="logo" style="color: white">
                     LeoJCL <span class="logo_com">.com</span>
                 </h2>
             </div>
         </div>
-
-        <!-- BÊN PH?I (FORM) -->
-        <div class="register-right d-flex align-items-center">
-            <div class="register-right-inner">
-
+        <div class="login-right d-flex align-items-center">
+            <div class="login-right-inner">
                 <div class="d-flex justify-content-center mb-4">
                     <h1 class="heading_font font-weight-bold">
-                        Create User Account
+                        Login
                     </h1>
                 </div>
-
-                <div class="myForm">
-                    <form th:action="@{/register/new}"
-                          th:object="${user}"
-                          method="post">
-
-                        <!-- Error message -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                                        <p th:text="${error}"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="myForm" style="align-items:center">
+                    <form th:action="@{/login}" th:object="${user}" method="post">
                         <div class="box-body bozero mx2p">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input
                                                 placeholder="Email"
-                                                name="email"
-                                                th:field="*{email}"
+                                                name="username"
+                                                field="{email}"
                                                 type="email"
                                                 style="width: 100%"
                                                 class="form-control"
-                                                required
-                                        />
+                                                required/>
                                     </div>
                                 </div>
                             </div>
@@ -97,55 +86,57 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input
-                                                min="8"
                                                 placeholder="Password"
                                                 name="password"
-                                                th:field="*{password}"
+                                                field="{password}"
                                                 type="password"
                                                 style="width: 100%"
-                                                class="form-control pwd"
+                                                class="form-control"
                                                 required/>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <select
-                                            required
-                                            class="form-control"
-                                            th:field="*{userType}">
-                                        <th:block th:each="userType :${getAllTypes}">
-                                            <option
-                                                    th:text="${userType.userTypeName}"
-                                                    th:value="${userType.userTypeId}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </div>
+                            <div class="clearfix mb-4">
+                                <label class="float-left form-check-label"><input type="checkbox" /> Remember me</label>
+                                <a href="#" class="color-text float-right">Forgot Password?</a>
                             </div>
                         </div>
                         <div class="box-footer">
                             <div class="row">
                                 <div class="form-group mt-5 col-md-12">
                                     <button type="submit" class="myBtn py-3" style="width: 100%;">
-                                        Save
+                                        Log in
                                     </button>
                                 </div>
                             </div>
+                            <p class="text-center">
+                                Are you a new User?
+                                <a class="color-text" href="#" th:href="@{/register}">
+                                    Register Now</a>
+                            </p>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
-
     </div>
 </section>
-
 </body>
+<script
+        type="text/javascript"
+        th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"
+></script>
 
-<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script
+        type="text/javascript"
+        th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"
+></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
 </html>

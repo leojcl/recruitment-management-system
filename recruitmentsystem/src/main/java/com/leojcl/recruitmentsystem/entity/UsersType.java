@@ -17,7 +17,7 @@ public class UsersType {
 
     private String userTypeName;
 
-    @OneToMany(targetEntity = Users.class, mappedBy = "userTypeId", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Users.class, mappedBy = "userType", cascade = CascadeType.ALL)
     private List<Users> users;
 
     public UsersType() {
@@ -29,7 +29,7 @@ public class UsersType {
         this.users = users;
     }
 
-    // lưu ý tuyệt đối không được để thêm List<Users> vào, vì sẽ gây ra lỗi infinite recursion
+    // don't add List<Users>, because infinite recursion
     @Override
     public String toString() {
         return "UsersType{" +
