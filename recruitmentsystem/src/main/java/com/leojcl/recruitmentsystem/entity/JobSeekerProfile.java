@@ -13,7 +13,7 @@ import java.util.List;
 public class JobSeekerProfile {
 
     @Id
-    private int userAccountId;
+    private Integer userAccountId;
 
     @OneToOne
     @JoinColumn(name = "user_account_id")
@@ -39,8 +39,12 @@ public class JobSeekerProfile {
     public JobSeekerProfile(Users userId) {
         this.userId = userId;
     }
+    public String getPhotoImagePath(){
+        if (profilePhoto == null || userAccountId == null) return  null;
+        return "/photos/candidate/"+ userAccountId+"/"+profilePhoto;
+    }
 
-    public JobSeekerProfile(int userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String workAuthorization, String employmentType, String resume, String profilePhoto, List<SKill> skills) {
+    public JobSeekerProfile(Integer userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String workAuthorization, String employmentType, String resume, String profilePhoto, List<SKill> skills) {
         this.userAccountId = userAccountId;
         this.userId = userId;
         this.firstName = firstName;

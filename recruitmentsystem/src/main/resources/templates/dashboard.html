@@ -13,12 +13,9 @@
 
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
-    <link
-            rel="stylesheet"
-            type="text/css"
-            media="all"
-            th:href="@{/css/font-awesome.min.css}"/>
-    <link>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.min.css}"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 
 <body>
@@ -118,10 +115,10 @@
                             </div>
                             <div class="col-md-4 text-center">
                                 <label
-                                        th:text="${jobPost.jobLocationId.city+', '+ jobPost.jobLocationId.state}">City State</label>
+                                        th:text="${jobPost.jobLocation.city+', '+ jobPost.jobLocation.state}">City State</label>
                             </div>
                             <div class="col-md-4 text-right">
-                                <label th:text="@{${jobPost.jobCompanyId.name}}">Recruiter Company Name</label>
+                                <label th:text="@{${jobPost.jobCompany.name}}">Recruiter Company Name</label>
                             </div>
                         </div>
                     </div>
@@ -139,5 +136,8 @@
         type="text/javascript"
         th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"
 ></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
 </body>
 </html>

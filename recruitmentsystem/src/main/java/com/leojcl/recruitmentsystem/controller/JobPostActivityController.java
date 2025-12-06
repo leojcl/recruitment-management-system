@@ -1,12 +1,15 @@
 package com.leojcl.recruitmentsystem.controller;
 
 import com.leojcl.recruitmentsystem.entity.JobPostActivity;
+import com.leojcl.recruitmentsystem.entity.RecruiterJobsDto;
+import com.leojcl.recruitmentsystem.entity.RecruiterProfile;
 import com.leojcl.recruitmentsystem.entity.Users;
 import com.leojcl.recruitmentsystem.service.JobPostActivityService;
 import com.leojcl.recruitmentsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class JobPostActivityController {
@@ -34,6 +38,10 @@ public class JobPostActivityController {
             assert authentication != null;
             String currentUsername =  authentication.getName();
             model.addAttribute("username", currentUsername);
+            if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))){
+                List<RecruiterJobsDto> recruiterJobs = jobPostActivityService.getRecruiterJobs(((RecruiterProfile)currentUserProfile).getUserAccountId());
+                model.addAttribute("jobPost", recruiterJobs);
+            }
         }
         model.addAttribute("user", currentUserProfile);
         return "dashboard";

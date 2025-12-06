@@ -1,6 +1,7 @@
 package com.leojcl.recruitmentsystem.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -21,13 +22,13 @@ public class JobPostActivity {
     @JoinColumn(name = "postedById", referencedColumnName = "userId")
     private Users postedById;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "jobLocationId", referencedColumnName = "Id")
-    private JobLocation jobLocationId;
+    private JobLocation jobLocation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "jobCompanyId", referencedColumnName = "Id")
-    private JobCompany jobCompanyId;
+    private JobCompany jobCompany;
 
     @Transient
     private boolean isActive;
@@ -50,11 +51,11 @@ public class JobPostActivity {
     public JobPostActivity() {
     }
 
-    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocationId, JobCompany jobCompanyId, boolean isActive, boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
+    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocation, JobCompany jobCompany, boolean isActive, boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
         this.jobPostId = jobPostId;
         this.postedById = postedById;
-        this.jobLocationId = jobLocationId;
-        this.jobCompanyId = jobCompanyId;
+        this.jobLocation = jobLocation;
+        this.jobCompany = jobCompany;
         this.isActive = isActive;
         this.isSaved = isSaved;
         this.descriptionOfJob = descriptionOfJob;
