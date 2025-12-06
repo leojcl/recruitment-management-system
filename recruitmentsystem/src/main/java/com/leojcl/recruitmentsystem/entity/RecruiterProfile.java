@@ -3,6 +3,7 @@ package com.leojcl.recruitmentsystem.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Persistent;
 
 @Entity
 @Table(name = "recruiter_profile")
@@ -43,6 +44,11 @@ public class RecruiterProfile {
     }
 
     public RecruiterProfile() {
+    }
+    @Transient
+    public String getPhotosImagePath(){
+        if(profilePhoto == null) return  null;
+        return "/photos/recruiter/"+userAccountId+"/"+profilePhoto;
     }
 
     @Override

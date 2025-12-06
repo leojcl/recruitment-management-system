@@ -40,6 +40,7 @@ public class WebSecurityConfig {
             "/css/**",
             "/summernote/**",
             "/js/**",
+            "/photos/**",
             "/*.css",
             "/*.js",
             "/*.js.map",

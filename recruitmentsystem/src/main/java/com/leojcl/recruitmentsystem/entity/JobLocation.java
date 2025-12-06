@@ -1,0 +1,34 @@
+package com.leojcl.recruitmentsystem.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+public class JobLocation {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+
+    private String city;
+
+    private String state;
+
+    private String country;
+
+    public JobLocation() {
+    }
+
+    public JobLocation(Integer id, String city, String state, String country) {
+        Id = id;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+    }
+}
