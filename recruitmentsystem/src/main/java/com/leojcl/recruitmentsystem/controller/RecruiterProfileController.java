@@ -1,6 +1,5 @@
 package com.leojcl.recruitmentsystem.controller;
 
-import ch.qos.logback.core.util.StringUtil;
 import com.leojcl.recruitmentsystem.entity.RecruiterProfile;
 import com.leojcl.recruitmentsystem.entity.Users;
 import com.leojcl.recruitmentsystem.repository.UsersRepository;
@@ -9,7 +8,6 @@ import com.leojcl.recruitmentsystem.util.FileUploadUtil;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

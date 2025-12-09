@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "skills")
 @Getter
 @Setter
-public class SKill {
+public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class SKill {
     @JoinColumn(name = "job_seeker_profile")
     private JobSeekerProfile jobSeekerProfile;
 
-    public SKill() {
+    public Skill() {
     }
 
-    public SKill(int id, String name, String experienceLevel, String yearsOfExperience, JobSeekerProfile jobSeekerProfile) {
+    public Skill(int id, String name, String experienceLevel, String yearsOfExperience, JobSeekerProfile jobSeekerProfile) {
         this.id = id;
         this.name = name;
         this.experienceLevel = experienceLevel;

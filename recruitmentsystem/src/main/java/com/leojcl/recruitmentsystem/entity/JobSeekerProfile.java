@@ -30,8 +30,8 @@ public class JobSeekerProfile {
     @Column(nullable = true, length = 64)
     private String profilePhoto;
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "jobSeekerProfile")
-    private List<SKill> skills;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobSeekerProfile")
+    private List<Skill> skills;
 
     public JobSeekerProfile() {
     }
@@ -39,12 +39,14 @@ public class JobSeekerProfile {
     public JobSeekerProfile(Users userId) {
         this.userId = userId;
     }
-    public String getPhotoImagePath(){
-        if (profilePhoto == null || userAccountId == null) return  null;
-        return "/photos/candidate/"+ userAccountId+"/"+profilePhoto;
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (profilePhoto == null) return null;
+        return "/photos/candidate/" + userAccountId + "/" + profilePhoto;
     }
 
-    public JobSeekerProfile(Integer userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String workAuthorization, String employmentType, String resume, String profilePhoto, List<SKill> skills) {
+    public JobSeekerProfile(Integer userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String workAuthorization, String employmentType, String resume, String profilePhoto, List<Skill> skills) {
         this.userAccountId = userAccountId;
         this.userId = userId;
         this.firstName = firstName;
@@ -73,7 +75,6 @@ public class JobSeekerProfile {
                 ", employmentType='" + employmentType + '\'' +
                 ", resume='" + resume + '\'' +
                 ", profilePhoto='" + profilePhoto + '\'' +
-                ", skills=" + skills +
                 '}';
     }
 }

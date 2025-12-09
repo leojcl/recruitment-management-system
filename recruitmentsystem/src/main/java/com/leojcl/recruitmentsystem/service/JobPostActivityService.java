@@ -3,7 +3,6 @@ package com.leojcl.recruitmentsystem.service;
 import com.leojcl.recruitmentsystem.entity.*;
 import com.leojcl.recruitmentsystem.repository.JobPostActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
