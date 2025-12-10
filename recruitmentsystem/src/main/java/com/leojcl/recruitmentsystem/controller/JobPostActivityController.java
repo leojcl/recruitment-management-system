@@ -1,10 +1,9 @@
 package com.leojcl.recruitmentsystem.controller;
 
-import com.leojcl.recruitmentsystem.entity.JobPostActivity;
-import com.leojcl.recruitmentsystem.entity.RecruiterJobsDto;
-import com.leojcl.recruitmentsystem.entity.RecruiterProfile;
-import com.leojcl.recruitmentsystem.entity.Users;
+import com.leojcl.recruitmentsystem.entity.*;
 import com.leojcl.recruitmentsystem.service.JobPostActivityService;
+import com.leojcl.recruitmentsystem.service.JobSeekerApplyService;
+import com.leojcl.recruitmentsystem.service.JobSeekerSaveService;
 import com.leojcl.recruitmentsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -28,11 +27,15 @@ import java.util.Objects;
 public class JobPostActivityController {
     private final UserService userService;
     private final JobPostActivityService jobPostActivityService;
+    private final JobSeekerApplyService jobSeekerApplyService;
+    private final JobSeekerSaveService jobSeekerSaveService;
 
     @Autowired
-    public JobPostActivityController(UserService userService, JobPostActivityService jobPostActivityService) {
+    public JobPostActivityController(UserService userService, JobPostActivityService jobPostActivityService, JobSeekerApplyService jobSeekerApplyService, JobSeekerSaveService jobSeekerSaveService) {
         this.userService = userService;
         this.jobPostActivityService = jobPostActivityService;
+        this.jobSeekerApplyService = jobSeekerApplyService;
+        this.jobSeekerSaveService = jobSeekerSaveService;
     }
 
     @GetMapping("/dashboard")
@@ -102,6 +105,38 @@ public class JobPostActivityController {
             if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
                 List<RecruiterJobsDto> recruiterJobs = jobPostActivityService.getRecruiterJobs(((RecruiterProfile) currentUserProfile).getUserAccountId());
                 model.addAttribute("jobPost", recruiterJobs);
+            } else {
+                List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.getCandidatesJobs((JobSeekerProfile) currentUserProfile);
+                List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getCandidatesJobs((JobSeekerProfile) currentUserProfile);
+
+                boolean exist;
+                boolean saved;
+
+                for (JobPostActivity jobPostActivity : jobPostActivities) {
+                    exist = false;
+                    saved = false;
+                    for (JobSeekerApply jobSeekerApply : jobSeekerApplyList) {
+                        if (Objects.equals(jobPostActivity.getPostedById(), jobSeekerApply.getJob().getJobPostId())) {
+                            jobPostActivity.setActive(true);
+                            exist = true;
+                            break;
+                        }
+                    }
+                    for (JobSeekerSave jobSeekerSave : jobSeekerSaveList) {
+                        if (Objects.equals(jobPostActivity.getJobPostId(), jobSeekerSave.getJob().getPostedById())) {
+                            jobPostActivity.setSaved(true);
+                            saved = true;
+                            break;
+                        }
+                    }
+                    if (!exist) {
+                        jobPostActivity.setActive(false);
+                    }
+                    if (!saved) {
+                        jobPostActivity.setSaved(false);
+                    }
+                    model.addAttribute("jobPost", jobPostActivities);
+                }
             }
         }
         model.addAttribute("user", currentUserProfile);
