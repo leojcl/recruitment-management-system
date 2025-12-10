@@ -43,7 +43,7 @@ public class JobSeekerProfile {
     @Transient
     public String getPhotosImagePath() {
         if (profilePhoto == null) return null;
-        return "/photos/candidate/" + userAccountId + "/" + profilePhoto;
+        return "photos/candidate/" + userAccountId + "/" + profilePhoto;
     }
 
     public JobSeekerProfile(Integer userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String workAuthorization, String employmentType, String resume, String profilePhoto, List<Skill> skills) {

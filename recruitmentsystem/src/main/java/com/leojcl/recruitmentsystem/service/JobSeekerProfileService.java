@@ -21,4 +21,8 @@ public class JobSeekerProfileService {
     public Optional<JobSeekerProfile> getOne(Integer id) {
         return jobSeekerProfileRepository.findWithSkillsByUserAccountId(id);
     }
+
+    public JobSeekerProfile addNew(JobSeekerProfile jobSeekerProfile) {
+        return jobSeekerProfileRepository.save(jobSeekerProfile);
+    }
 }
