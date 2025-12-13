@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 @Table(name = "users")
@@ -49,7 +50,6 @@ public class Users {
         return "Users{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 ", registrationDate=" + registrationDate +
                 ", userTypeId=" + userType +

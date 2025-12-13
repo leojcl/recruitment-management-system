@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -39,44 +40,52 @@ public class JobSeekerApplyController {
     @GetMapping("job-details-apply/{id}")
     public String display(@PathVariable("id") int id, Model model) {
         JobPostActivity jobDetails = jobPostActivityService.getOne(id);
-        List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.getJobCandidates(jobDetails);
-        List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getJobsCandidates(jobDetails);
+        List<JobSeekerApply> applies = jobSeekerApplyService.getJobCandidates(jobDetails);
+        List<JobSeekerSave> saves = jobSeekerSaveService.getJobsCandidates(jobDetails);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            model.addAttribute("username", authentication.getName());
+
             if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
-                RecruiterProfile user = recruiterProfileService.getCurrentRecruiterProfile();
-                if (user != null) {
-                    model.addAttribute("applyList", jobSeekerApplyList);
+                RecruiterProfile recruiter = recruiterProfileService.getCurrentRecruiterProfile();
+                if (recruiter != null) {
+
+                    model.addAttribute("displayName",
+                            recruiter.getFirstName() != null && recruiter.getLastName() != null
+                                    ? recruiter.getFirstName() + " " + recruiter.getLastName()
+                                    : authentication.getName());
+                    model.addAttribute("avatarPath", recruiter.getPhotosImagePath());
+
+                    model.addAttribute("applyList", applies);
                 }
             } else {
-                JobSeekerProfile user = jobSeekerProfileService.getCurrentSeekerProfile();
-                if (user != null) {
-                    boolean exists = false;
-                    boolean saved = false;
-                    for (JobSeekerApply jobSeekerApply : jobSeekerApplyList) {
-                        if (jobSeekerApply.getUserId().getUserAccountId() == user.getUserAccountId()) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    for (JobSeekerSave jobSeekerSave : jobSeekerSaveList) {
-                        if (jobSeekerSave.getUserId().getUserAccountId() == user.getUserAccountId()) {
-                            saved = true;
-                            break;
-                        }
-                    }
-                    model.addAttribute("alreadyApplied", exists);
-                    model.addAttribute("alreadySaved", saved);
+                JobSeekerProfile seeker = jobSeekerProfileService.getCurrentSeekerProfile();
+                if (seeker != null) {
+
+                    model.addAttribute("displayName",
+                            seeker.getFirstName() != null && seeker.getLastName() != null
+                                    ? seeker.getFirstName() + " " + seeker.getLastName()
+                                    : authentication.getName());
+                    model.addAttribute("avatarPath", seeker.getPhotosImagePath());
+
+                    Integer uid = seeker.getUserAccountId();
+
+                    boolean alreadyApplied = applies.stream()
+                            .anyMatch(a -> Objects.equals(a.getUserId().getUserAccountId(), uid));
+                    boolean alreadySaved = saves.stream()
+                            .anyMatch(s -> Objects.equals(s.getUserId().getUserAccountId(), uid));
+
+                    model.addAttribute("alreadyApplied", alreadyApplied);
+                    model.addAttribute("alreadySaved", alreadySaved);
+
                 }
             }
         }
 
-        JobSeekerApply jobSeekerApply = new JobSeekerApply();
-        model.addAttribute("applyJob", jobSeekerApply);
-
+        model.addAttribute("applyJob", new JobSeekerApply());
         model.addAttribute("jobDetails", jobDetails);
-        model.addAttribute("user", userService.getCurrentUserProfile());
+
         return "job-details";
     }
 
@@ -97,8 +106,12 @@ public class JobSeekerApplyController {
             } else {
                 throw new RuntimeException("User not found");
             }
+            if (jobSeekerApplyService.alreadyApplied(seekerProfile.get(), jobPostActivity)) {
+                return "redirect:/job-details-apply/" + id;
+            }
             jobSeekerApplyService.addNew(jobSeekerApply);
         }
+
         return "redirect:/dashboard";
     }
 }

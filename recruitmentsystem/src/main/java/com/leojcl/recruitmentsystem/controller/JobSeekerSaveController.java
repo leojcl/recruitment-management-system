@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class JobSeekerSaveController {
@@ -37,20 +36,21 @@ public class JobSeekerSaveController {
     }
 
     @PostMapping("job-details/save/{id}")
-    public String save(@PathVariable("id") int id, JobSeekerSave jobSeekerSave) {
+    public String save(@PathVariable("id") int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
             Users user = userService.findByEmail(currentUsername);
-            Optional<JobSeekerProfile> seekerProfile = jobSeekerProfileService.getOne(user.getUserId());
+
+            JobSeekerProfile seekerProfile = jobSeekerProfileService.getOne(user.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+
             JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);
-            if (seekerProfile.isPresent() && jobPostActivity != null) {
-                jobSeekerSave.setJob(jobPostActivity);
-                jobSeekerSave.setUserId(seekerProfile.get());
-            } else {
-                throw new RuntimeException("User not found ");
-            }
-            jobSeekerSaveService.addNew(jobSeekerSave);
+            if (jobPostActivity == null) throw new RuntimeException("Job not found");
+            JobSeekerSave save = new JobSeekerSave();
+            save.setUserId(seekerProfile);
+            save.setJob(jobPostActivity);
+
+            jobSeekerSaveService.addNew(save);
         }
         return "redirect:/dashboard";
     }

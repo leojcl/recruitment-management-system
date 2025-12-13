@@ -29,4 +29,8 @@ public class JobSeekerApplyService {
     public void addNew(JobSeekerApply jobSeekerApply) {
         jobSeekerApplyRepository.save(jobSeekerApply);
     }
+
+    public boolean alreadyApplied(JobSeekerProfile user, JobPostActivity job) {
+        return jobSeekerApplyRepository.existsByUserIdAndJob(user, job);
+    }
 }

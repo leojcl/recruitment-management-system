@@ -48,10 +48,9 @@ public class JobSeekerApply implements Serializable {
     public String toString() {
         return "JobSeekerApply{" +
                 "id=" + id +
-                ", userId=" + userId +
-                ", job=" + job +
+                ", userAccountId=" + (userId != null ? userId.getUserAccountId() : null) +
+                ", jobPostId=" + (job != null ? job.getJobPostId() : null) +
                 ", applyDate=" + applyDate +
-                ", coverLetter='" + coverLetter + '\'' +
                 '}';
     }
 }

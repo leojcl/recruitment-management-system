@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" style="height: 100%">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" style="height: 100%">
 <head>
     <meta charset="UTF-8"/>
     <title>Candidate Dashboard</title>
@@ -20,7 +21,7 @@
 
 <header class="navbar navbar-expand-lg navbar-dark">
     <label class="mt-2 ms-5 font-weight-bold h5"
-    ><a th:href="@{/dashboard/}">LeoJCL</a
+    ><a th:href="@{/dashboard}">LeoJCL</a
     ><span class="logo_com font-weight-bold h5" style="color: white">
           .com</span
     ></label
@@ -41,7 +42,7 @@
         <ul class="navbar-nav m-auto mt-2 mt-lg-0">
 
             <li class="nav-item active">
-                <a sec:authorize="hasAuthority('Job Seeker')" class="nav-link" th:href="@{/dashboard/}"
+                <a sec:authorize="hasAuthority('Job Seeker')" class="nav-link" th:href="@{/dashboard}"
                 ><i class="fas fa-search"></i>Search for Jobs</a
                 >
             </li>
@@ -60,7 +61,7 @@
                 >
             </li>
             <li class="nav-item active">
-                <a sec:authorize="hasAuthority('Recruiter')" class="nav-link" th:href="@{/dashboard/}"
+                <a sec:authorize="hasAuthority('Recruiter')" class="nav-link" th:href="@{/dashboard}"
                 > <i class="fa-solid fa-eye"></i>View Your Jobs</a
                 >
             </li>
@@ -74,10 +75,12 @@
         <img
                 class="rounded-circle me-3"
                 height="50px"
-                width="50x"
-                th:src="@{${user.photosImagePath}}"
+                width="50"
+                th:if="${avatarPath != null}"
+                th:src="@{${avatarPath}}"
         />
-        <label th:text="${user.firstName+' '+user.lastName}" class="nav-item nav-link px-2 me-3">John Doe</label>
+        <label th:text="${displayName != null ? displayName : username}" class="nav-item nav-link px-2 me-3">John
+            Doe</label>
 
         <button class="myBtn-light me-5" onclick="window.location.href='/logout'">Logout</button>
     </div>
@@ -100,9 +103,9 @@
             <div class="ms-3">
                 <h4 th:text="${jobDetails.jobTitle}" class="job-title text-left">Software Engineer</h4>
                 <div class="mt-1">
-                    <p th:text="${jobDetails.jobLocation.city+', '+ jobDetails.jobLocation.state}"
+                    <p th:text="${jobDetails.jobLocationId.city+', '+ jobDetails.jobLocationId.state}"
                        class="m-0"> California, USA</p>
-                    <p th:text="${jobDetails.jobCompany.name}">Company</p>
+                    <p th:text="${jobDetails.jobCompanyId.name}">Company</p>
                 </div>
             </div>
         </div>
@@ -206,9 +209,9 @@
 <script>
     var element = document.getElementById('back-link');
     element.setAttribute('href', document.referrer);
-    element.onclick = function() {
-      history.back();
-      return false;
+    element.onclick = function () {
+        history.back();
+        return false;
     }
 </script>
 </body>

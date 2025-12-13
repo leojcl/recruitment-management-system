@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
 
 
     <link th:rel="stylesheet" type="text/css" media="all" th:href="@{/summernote/summernote-lite.min.css}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
-    <link rel="stylesheet" type="text/css" media="all"  th:href="@{/css/font-awesome.min.css}" />
-    <link rel="stylesheet" type="text/css" media="all"  th:href="@{/css/style.css}" />
-    <link rel="stylesheet" type="text/css" media="all"  th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
     <meta charset="ISO-8859-1">
     <title>Profile Setup</title>
 </head>
@@ -23,10 +24,11 @@
         </div>
     </div>
     <div class="col-md-7 container myForm">
-        <form id="job-main-form" th:action="@{/dashboard/addNew}" th:object="${jobPostActivity}" method="post" class="job-add-form">
-            <input hidden type="text" th:field="*{jobPostId}" >
-            <input hidden type="text" th:field="*{jobLocation.Id}" >
-            <input hidden type="text" th:field="*{jobCompany.Id}" >
+        <form id="job-main-form" th:action="@{/dashboard/addNew}" th:object="${jobPostActivity}" method="post"
+              class="job-add-form">
+            <input hidden type="text" th:field="*{jobPostId}">
+            <input hidden type="text" th:field="*{jobLocationId}">
+            <input hidden type="text" th:field="*{jobCompanyId}">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="d-flex justify-content-center pt-3">
@@ -35,7 +37,7 @@
                 </div>
             </div>
             <label class="heading_font font_sub_heading_color">Job Details</label>
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-12 form-group">
                     <input id="title" type="text" th:field="*{jobTitle}" class="form-control" placeholder="Job Title">
                 </div>
@@ -44,11 +46,11 @@
             <div class="row">
                 <div class="col-md-4 form-group">
                     <select id="type" th:field="*{jobType}" class="form-control">
-                        <option value="" >Employment Type</option>
-                        <option th:value="Full-time" >Full-time</option>
-                        <option th:value="Part-time" >Part-time</option>
-                        <option th:value="Freelance" >Freelance</option>
-                        <option th:value="Internship" >Internship</option>
+                        <option value="">Employment Type</option>
+                        <option th:value="Full-time">Full-time</option>
+                        <option th:value="Part-time">Part-time</option>
+                        <option th:value="Freelance">Freelance</option>
+                        <option th:value="Internship">Internship</option>
                     </select>
                 </div>
                 <div class="col-md-4 form-group">
@@ -72,25 +74,29 @@
             </div>
 
             <label class="mt-2 heading_font font_sub_heading_color">Location</label>
-            <div class="row" >
+            <div class="row">
                 <div class="col-md-4 form-group">
-                    <input th:field="*{jobLocation.city}" id="city" type="text"  class="form-control" placeholder="City">
+                    <input th:field="*{jobLocationId.city}" id="city" type="text" class="form-control"
+                           placeholder="City">
                 </div>
                 <div class="col-md-4 form-group">
-                    <input id="state" th:field="*{jobLocation.state}" type="text"  class="form-control" placeholder="State">
+                    <input id="state" th:field="*{jobLocationId.state}" type="text" class="form-control"
+                           placeholder="State">
                 </div>
                 <div class="col-md-4 form-group">
-                    <input id="country" th:field="*{jobLocation.country}" type="text"  class="form-control" placeholder="Country">
+                    <input id="country" th:field="*{jobLocationId.country}" type="text" class="form-control"
+                           placeholder="Country">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 form-group">
                     <label class="mt-2 heading_font font_sub_heading_color">Company</label>
-                    <input id="companyName" th:field="*{jobCompany.name}" type="text" class="form-control" placeholder="Company Name">
+                    <input id="companyName" th:field="*{jobCompanyId.name}" type="text" class="form-control"
+                           placeholder="Company Name">
                 </div>
             </div>
 
-            <div class="row mt-4" >
+            <div class="row mt-4">
                 <div class="col d-flex justify-content-center">
                     <button type="submit" name="submit" class="btn btn-primary base_button px-4 py-2 mb-5">Save</button>
                 </div>
@@ -107,7 +113,7 @@
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 
 <script>
-console.log($('#content'));
+    console.log($('#content'));
     $('#content').summernote({
         height: 100
     });

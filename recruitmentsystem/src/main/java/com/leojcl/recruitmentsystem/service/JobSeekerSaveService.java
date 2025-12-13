@@ -4,6 +4,7 @@ import com.leojcl.recruitmentsystem.entity.JobPostActivity;
 import com.leojcl.recruitmentsystem.entity.JobSeekerProfile;
 import com.leojcl.recruitmentsystem.entity.JobSeekerSave;
 import com.leojcl.recruitmentsystem.repository.JobSeekerSaveRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class JobSeekerSaveService {
         return jobSeekerSaveRepository.findByJob(job);
     }
 
+    @Transactional
     public void addNew(JobSeekerSave jobSeekerSave) {
         jobSeekerSaveRepository.save(jobSeekerSave);
     }

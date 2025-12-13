@@ -84,23 +84,22 @@ public class JobSeekerProfileController {
         for (Skill skills : jobSeekerProfile.getSkills()) {
             skills.setJobSeekerProfile(jobSeekerProfile);
         }
-        String imageName = "";
+        String imageName = null;
         String resumeName = "";
 
-        if (Objects.equals(image.getOriginalFilename(), "")) {
+        if (image != null && !image.isEmpty()) {
             imageName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             jobSeekerProfile.setProfilePhoto(imageName);
         }
-
-        if (Objects.equals(image.getOriginalFilename(), "")) {
-            resumeName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
-            jobSeekerProfile.setProfilePhoto(resumeName);
+        if (pdf != null && !pdf.isEmpty()) {
+            resumeName = StringUtils.cleanPath(Objects.requireNonNull(pdf.getOriginalFilename()));
+            jobSeekerProfile.setResume(resumeName);
         }
 
         jobSeekerProfile = jobSeekerProfileService.addNew(jobSeekerProfile);
 
         try {
-            String uploadDir = "/photos/candidate/" + jobSeekerProfile.getUserAccountId();
+            String uploadDir = "photos/candidate/" + jobSeekerProfile.getUserAccountId();
             if (!Objects.equals(image.getOriginalFilename(), "")) {
                 FileUploadUtil.saveFile(uploadDir, imageName, image);
             }

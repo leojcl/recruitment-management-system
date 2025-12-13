@@ -23,11 +23,14 @@ public class JobPostActivity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "jobLocationId", referencedColumnName = "Id")
-    private JobLocation jobLocation;
+    private JobLocation jobLocationId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "jobCompanyId", referencedColumnName = "Id")
-    private JobCompany jobCompany;
+    private JobCompany jobCompanyId;
+
+    @Transient
+    private Long totalCandidates; // used in views for recruiter dashboard
 
     @Transient
     private boolean isActive;
@@ -50,11 +53,11 @@ public class JobPostActivity {
     public JobPostActivity() {
     }
 
-    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocation, JobCompany jobCompany, boolean isActive, boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
+    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocationId, JobCompany jobCompanyId, boolean isActive, boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
         this.jobPostId = jobPostId;
         this.postedById = postedById;
-        this.jobLocation = jobLocation;
-        this.jobCompany = jobCompany;
+        this.jobLocationId = jobLocationId;
+        this.jobCompanyId = jobCompanyId;
         this.isActive = isActive;
         this.isSaved = isSaved;
         this.descriptionOfJob = descriptionOfJob;
