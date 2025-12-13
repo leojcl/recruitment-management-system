@@ -15,7 +15,7 @@ import java.util.Date;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private Integer userId;
 
     @Column(unique = true)
     private String email;
@@ -36,7 +36,7 @@ public class Users {
     public Users() {
     }
 
-    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userType) {
+    public Users(Integer userId, String email, String password, boolean isActive, Date registrationDate, UsersType userType) {
         this.userId = userId;
         this.email = email;
         this.password = password;

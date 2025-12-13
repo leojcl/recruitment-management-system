@@ -1,24 +1,34 @@
 package com.leojcl.recruitmentsystem.service;
 
-import com.leojcl.recruitmentsystem.entity.JobCompany;
-import com.leojcl.recruitmentsystem.entity.JobLocation;
-import com.leojcl.recruitmentsystem.entity.JobPostActivity;
-import com.leojcl.recruitmentsystem.entity.RecruiterJobsDto;
-import com.leojcl.recruitmentsystem.repository.JobPostActivityRepository;
+import com.leojcl.recruitmentsystem.entity.*;
+import com.leojcl.recruitmentsystem.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.util.StringUtils.hasText;
 
 @Service
 public class JobPostActivityService {
 
     private final JobPostActivityRepository jobPostActivityRepository;
+    private final JobLocationRepository jobLocationRepository;
+    private final JobCompanyRepository jobCompanyRepository;
+    private final JobSeekerApplyRepository jobSeekerApplyRepository;
+    private final JobSeekerSaveRepository jobSeekerSaveRepository;
 
     @Autowired
-    public JobPostActivityService(JobPostActivityRepository jobPostActivityRepository) {
+    public JobPostActivityService(JobPostActivityRepository jobPostActivityRepository, JobLocationRepository jobLocationRepository, JobCompanyRepository jobCompanyRepository, JobSeekerApplyRepository jobSeekerApplyRepository, JobSeekerSaveRepository jobSeekerSaveRepository) {
         this.jobPostActivityRepository = jobPostActivityRepository;
+        this.jobLocationRepository = jobLocationRepository;
+        this.jobCompanyRepository = jobCompanyRepository;
+        this.jobSeekerApplyRepository = jobSeekerApplyRepository;
+        this.jobSeekerSaveRepository = jobSeekerSaveRepository;
     }
 
     public JobPostActivity addNew(JobPostActivity jobPostActivity) {
@@ -27,15 +37,6 @@ public class JobPostActivityService {
 
     public List<RecruiterJobsDto> getRecruiterJobs(int recruiterId) {
 
-//        List<IRecruiterJobs> recruiterJobs = jobPostActivityRepository.getRecruiterJobs(recruiter);
-//        List<RecruiterJobsDto> recruiterJobsDtoList = new ArrayList<>();
-//
-//        for (IRecruiterJobs rec : recruiterJobs) {
-//            JobLocation loc = new JobLocation(rec.getLocationId(), rec.getCity(), rec.getState(), rec.getCountry());
-//            JobCompany comp = new JobCompany(rec.getCompanyId(), rec.getName(), "");
-//            recruiterJobsDtoList.add(new RecruiterJobsDto(rec.getTotalCandidates(), rec.getJob_post_id(), rec.getJob_title(), loc, comp));
-//        }
-//        return recruiterJobsDtoList;
         return jobPostActivityRepository.getRecruiterJobs(recruiterId)
                 .stream()
                 .map(r -> new RecruiterJobsDto(
@@ -61,5 +62,56 @@ public class JobPostActivityService {
             return jobPostActivityRepository.searchWithoutDate(job, location, remote, type);
         }
         return jobPostActivityRepository.search(job, location, remote, type, searchDate);
+    }
+
+    @Transactional
+    public JobPostActivity updateJob(Integer id, JobPostActivity form, Users currentUser, String locationCity, String companyName) {
+        JobPostActivity job = jobPostActivityRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+
+        if (job.getPostedById().getUserId() != currentUser.getUserId()) {
+            throw new ResponseStatusException(FORBIDDEN, "Forbidden");
+        }
+
+        job.setJobTitle(form.getJobTitle());
+        job.setDescriptionOfJob(form.getDescriptionOfJob());
+        job.setJobType(form.getJobType());
+        job.setSalary(form.getSalary());
+        job.setRemote(form.getRemote());
+
+        if (hasText(locationCity)) {
+            JobLocation jobLocation = (job.getJobLocationId() != null)
+                    ? job.getJobLocationId()
+                    : new JobLocation();
+
+            jobLocation.setCity(locationCity);
+
+            JobLocation savedLoc = jobLocationRepository.save(jobLocation);
+
+            job.setJobLocationId(savedLoc);
+        }
+        if (hasText(companyName)) {
+            JobCompany jobCompany = (job.getJobCompanyId() != null)
+                    ? job.getJobCompanyId()
+                    : new JobCompany();
+            jobCompany.setName(companyName);
+
+            JobCompany savedCom = jobCompanyRepository.save(jobCompany);
+
+            job.setJobCompanyId(savedCom);
+        }
+
+        return jobPostActivityRepository.save(job);
+    }
+
+    @Transactional
+    public void deleteJob(Integer id, Users currentUser) {
+        JobPostActivity job = jobPostActivityRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        if (job.getPostedById().getUserId() != currentUser.getUserId()) {
+            throw new ResponseStatusException(FORBIDDEN, "Forbidden");
+        }
+        jobSeekerApplyRepository.deleteByJob(job);
+        jobSeekerSaveRepository.deleteByJob(job);
+
+        jobPostActivityRepository.delete(job);
     }
 }

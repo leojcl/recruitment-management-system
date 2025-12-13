@@ -92,7 +92,6 @@ public class UserService {
         Users user = getCurrentUserOrThrow();
         int userId = user.getUserId();
 
-        assert authentication != null;
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
             return recruiterProfileRepository.findById(userId).orElse(null);
         }
@@ -117,7 +116,6 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            assert authentication != null;
             String userName = authentication.getName();
             Users user = usersRepository.findByEmail(userName).orElseThrow(() -> new UsernameNotFoundException("Could not found " + userName));
 
@@ -129,7 +127,7 @@ public class UserService {
     public Optional<RecruiterProfile> getCurrentRecruiter() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) return Optional.empty();
-        assert authentication != null;
+
         if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
             return Optional.empty();
         }
@@ -141,7 +139,6 @@ public class UserService {
     public Optional<JobSeekerProfile> getCurrentJobSeeker() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) return Optional.empty();
-        assert authentication != null;
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
             return Optional.empty();
         }

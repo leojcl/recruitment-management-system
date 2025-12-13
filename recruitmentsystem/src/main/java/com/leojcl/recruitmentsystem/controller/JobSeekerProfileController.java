@@ -5,6 +5,7 @@ import com.leojcl.recruitmentsystem.entity.Skill;
 import com.leojcl.recruitmentsystem.entity.Users;
 import com.leojcl.recruitmentsystem.repository.UsersRepository;
 import com.leojcl.recruitmentsystem.service.JobSeekerProfileService;
+import com.leojcl.recruitmentsystem.service.UserService;
 import com.leojcl.recruitmentsystem.util.FileDownloadUtil;
 import com.leojcl.recruitmentsystem.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -32,13 +32,15 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/job-seeker-profile")
 public class JobSeekerProfileController {
+    private final UserService userService;
     private JobSeekerProfileService jobSeekerProfileService;
     private UsersRepository usersRepository;
 
     @Autowired
-    public JobSeekerProfileController(JobSeekerProfileService jobSeekerProfileService, UsersRepository usersRepository) {
+    public JobSeekerProfileController(JobSeekerProfileService jobSeekerProfileService, UsersRepository usersRepository, UserService userService) {
         this.jobSeekerProfileService = jobSeekerProfileService;
         this.usersRepository = usersRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -47,7 +49,7 @@ public class JobSeekerProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            Users user = usersRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
+            Users user = userService.findByEmail(authentication.getName());
 
             Optional<JobSeekerProfile> seekerProfile = jobSeekerProfileService.getOne(user.getUserId());
             if (seekerProfile.isPresent()) {
@@ -73,7 +75,7 @@ public class JobSeekerProfileController {
                          Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            Users user = usersRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            Users user = userService.findByEmail(authentication.getName());
             jobSeekerProfile.setUserId(user);
             jobSeekerProfile.setUserAccountId(user.getUserId());
         }

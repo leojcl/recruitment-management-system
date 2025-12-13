@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Job</title>
+
+    <!-- CSS (tùy theo project, bạn giữ nguyên như các trang khác) -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/summernote/summernote-lite.min.css}"/>
+</head>
+<body>
+<section class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="primary-title">Edit Job</h1>
+            <p class="text-muted">Chỉnh sửa thông tin job của bạn</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-10 mx-auto">
+            <!-- Form Update Job -->
+            <form th:action="@{'/jobs/' + ${job.jobPostId}}" th:object="${job}" method="post"
+                  class="card p-4 shadow-sm mb-3">
+                <!-- Nếu bạn cấu hình method override, bỏ comment dòng dưới -->
+                <!-- <input type="hidden" name="_method" value="PUT" /> -->
+                <input type="hidden" th:field="*{jobPostId}"/>
+
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+
+                <div class="mb-3">
+                    <label class="form-label">Job Title</label>
+                    <input type="text" class="form-control" th:field="*{jobTitle}" placeholder="Enter job title"
+                           required/>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('jobTitle')}"
+                         th:errors="*{jobTitle}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Job Description</label>
+                    <!-- Nếu dùng WYSIWYG, Summernote sẽ khởi tạo trên textarea này -->
+                    <textarea class="form-control" th:field="*{descriptionOfJob}" rows="8"
+                              placeholder="Enter job description"></textarea>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('descriptionOfJob')}"
+                         th:errors="*{descriptionOfJob}"></div>
+                </div>
+
+                <label class="large-label px-1 mt-2 mb-2 fw-bold">Job Specs</label>
+                <div class="row g-3">
+                    <!--                    <div class="col-md-3">-->
+                    <!--                        <label class="form-label">Date Posted</label>-->
+                    <!--                        <input type="date" class="form-control" th:field="*{postedDate}"/>-->
+                    <!--                        <div class="text-danger small" th:if="${#fields.hasErrors('postedDate')}"-->
+                    <!--                             th:errors="*{postedDate}"></div>-->
+                    <!--                    </div>-->
+                    <div class="col-md-3">
+                        <label class="form-label">Salary</label>
+                        <input type="text" class="form-control" th:field="*{salary}" placeholder="e.g. 50k - 120k/y"/>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('salary')}"
+                             th:errors="*{salary}"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type</label>
+                        <select class="form-select" th:field="*{jobType}">
+                            <option value="">-- Select --</option>
+                            <option value="Full-Time">Full-Time</option>
+                            <option value="Part-Time">Part-Time</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('jobType')}"
+                             th:errors="*{jobType}"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Remote</label>
+                        <select class="form-select" th:field="*{remote}">
+                            <option value="">-- Select --</option>
+                            <option value="Remote-Only">Remote-Only</option>
+                            <option value="Office-Only">Office-Only</option>
+                            <option value="Partial-Remote">Partial-Remote</option>
+                        </select>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('remote')}"
+                             th:errors="*{remote}"></div>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Location (City)</label>
+                        <input class="form-control" name="locationCity"
+                               th:value="${job.jobLocationId != null ? job.jobLocationId.city : ''}"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Company Name</label>
+                        <input class="form-control" name="companyName"
+                               th:value="${job.jobCompanyId != null ? job.jobCompanyId.name : ''}"/>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{'/job-details-apply/' + ${job.jobPostId}}">Cancel</a>
+                </div>
+            </form>
+
+            <!-- Form Delete Job (Hard delete) -->
+            <form th:action="@{'/jobs/' + ${job.jobPostId} + '/delete'}" method="post" class="text-end"
+                  onsubmit="return confirm('Delete this job? This action cannot be undone.');">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- JS -->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/summernote/summernote-lite.min.js}"></script>
+<script>
+    // Khởi tạo Summernote nếu cần (chỉ khi bạn muốn WYSIWYG cho mô tả)
+    $(function () {
+        if ($('textarea[name="descriptionOfJob"]').length && $.fn.summernote) {
+            $('textarea[name="descriptionOfJob"]').summernote({
+                placeholder: 'Enter job description...',
+                height: 250
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface JobPostActivityRepository extends JpaRepository<JobPostActivity, Integer> {
     @Query(value =
@@ -55,4 +56,6 @@ public interface JobPostActivityRepository extends JpaRepository<JobPostActivity
                                  @Param("remote") List<String> remote,
                                  @Param("type") List<String> type,
                                  @Param("date") LocalDate date);
+
+    Optional<JobPostActivity> findByJobPostIdAndPostedById_UserId(Integer jobId, Integer ownerId);
 }

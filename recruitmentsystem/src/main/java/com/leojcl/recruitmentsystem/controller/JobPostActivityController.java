@@ -8,7 +8,10 @@ import com.leojcl.recruitmentsystem.service.JobPostActivityService;
 import com.leojcl.recruitmentsystem.service.JobSeekerApplyService;
 import com.leojcl.recruitmentsystem.service.JobSeekerSaveService;
 import com.leojcl.recruitmentsystem.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,13 +19,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class JobPostActivityController {
@@ -50,14 +54,20 @@ public class JobPostActivityController {
         if (partTime == null && fullTime == null && freelance == null) {
             return List.of("Part-Time", "Full-Time", "Freelance");
         }
-        return Arrays.asList(partTime, fullTime, freelance);
+//        return Arrays.asList(partTime, fullTime, freelance);
+        return Stream.of(partTime, fullTime, freelance)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     private List<String> resolveRemoteTypes(String remoteOnly, String officeOnly, String partialRemote) {
         if (remoteOnly == null && officeOnly == null && partialRemote == null) {
             return List.of("Remote-Only", "Office-Only", "Partial-Remote");
         }
-        return Arrays.asList(remoteOnly, officeOnly, partialRemote);
+//        return Arrays.asList(remoteOnly, officeOnly, partialRemote);
+        return Stream.of(remoteOnly, officeOnly, partialRemote)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     private void markAppliedAndSavedJobs(List<JobPostActivity> jobs, JobSeekerProfile seeker) {
@@ -129,7 +139,6 @@ public class JobPostActivityController {
             model.addAttribute("jobPost", jobs);
             return "dashboard";
         }
-        assert authentication != null;
         model.addAttribute("username", authentication.getName());
 
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
@@ -169,6 +178,46 @@ public class JobPostActivityController {
         model.addAttribute("user", userService.getCurrentUserProfile());
 
         return "add-jobs";
+    }
+
+    @PreAuthorize("hasAuthority('Recruiter')")
+    @GetMapping("jobs/{id}/edit")
+    public String editJobForm(@PathVariable Integer id, Model model) {
+        JobPostActivity job = jobPostActivityService.getOne(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users currentUser = userService.findByEmail(authentication.getName());
+
+        if (job.getPostedById().getUserId() != currentUser.getUserId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "FORBIDDEN");
+        }
+        model.addAttribute("job", job);
+//        model.addAttribute("location");
+        return "job-edit";
+    }
+
+    @PreAuthorize("hasAuthority('Recruiter')")
+    @PostMapping("jobs/{id}")
+    public String updateJob(@PathVariable Integer id, @Valid @ModelAttribute("job") JobPostActivity form,
+                            BindingResult bindingResult,
+                            @RequestParam(required = false) String locationCity,
+                            @RequestParam(required = false) String companyName) {
+        if (bindingResult.hasErrors()) {
+            return "job-edit";
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users currentUser = userService.findByEmail(authentication.getName());
+
+        jobPostActivityService.updateJob(id, form, currentUser, locationCity, companyName);
+        return "redirect:/job-details-apply/" + id;
+    }
+
+    @PreAuthorize("hasAuthority('Recruiter')")
+    @PostMapping("jobs/{id}/delete")
+    public String deleteJob(@PathVariable Integer id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users currentUser = userService.findByEmail(authentication.getName());
+        jobPostActivityService.deleteJob(id, currentUser);
+        return "redirect:/dashboard";
     }
 
     @GetMapping("global-search/")
@@ -232,6 +281,7 @@ public class JobPostActivityController {
         return "global-search";
     }
 
+    @PreAuthorize("hasAuthority('Recruiter')")
     @PostMapping("/dashboard/addNew")
     public String addNew(JobPostActivity jobPostActivity, Model model) {
         Users user = userService.getCurrentUser();

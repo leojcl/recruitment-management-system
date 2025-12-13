@@ -4,11 +4,11 @@ import com.leojcl.recruitmentsystem.entity.RecruiterProfile;
 import com.leojcl.recruitmentsystem.entity.Users;
 import com.leojcl.recruitmentsystem.repository.UsersRepository;
 import com.leojcl.recruitmentsystem.service.RecruiterProfileService;
+import com.leojcl.recruitmentsystem.service.UserService;
 import com.leojcl.recruitmentsystem.util.FileUploadUtil;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -26,10 +26,12 @@ import java.util.Optional;
 public class RecruiterProfileController {
     private final UsersRepository usersRepository;
     private final RecruiterProfileService recruiterProfileService;
+    private final UserService userService;
 
-    public RecruiterProfileController(UsersRepository usersRepository, RecruiterProfileService recruiterProfileService) {
+    public RecruiterProfileController(UsersRepository usersRepository, RecruiterProfileService recruiterProfileService, UserService userService) {
         this.usersRepository = usersRepository;
         this.recruiterProfileService = recruiterProfileService;
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -37,7 +39,7 @@ public class RecruiterProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
-            Users user = usersRepository.findByEmail(currentUserName).orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
+            Users user = userService.findByEmail(currentUserName);
             Optional<RecruiterProfile> recruiterProfile = recruiterProfileService.getOne(user.getUserId());
             recruiterProfile.ifPresent(profile -> model.addAttribute("profile", profile));
         }
@@ -50,7 +52,7 @@ public class RecruiterProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
-            Users user = usersRepository.findByEmail(currentUsername).orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
+            Users user = userService.findByEmail(currentUsername);
 
             recruiterProfile.setUserId(user);
             recruiterProfile.setUserAccountId(user.getUserId());

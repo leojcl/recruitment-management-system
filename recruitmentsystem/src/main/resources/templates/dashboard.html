@@ -253,11 +253,16 @@
                             </div>
                             <div class="col-md-4 text-center">
                                 <label
+                                        th:if="${jobPost.jobLocationId != null}"
                                         th:text="${jobPost.jobLocationId.city+', '+ jobPost.jobLocationId.state}">City
                                     State</label>
+                                <label th:if="${jobPost.jobLocationId == null}">N/A</label>
                             </div>
                             <div class="col-md-4 text-right">
-                                <label th:text="@{${jobPost.jobCompanyId.name}}">Recruiter Company Name</label>
+
+                                <label
+                                        th:if="${jobPost.jobCompanyId != null}"
+                                        th:text="@{${jobPost.jobCompanyId.name}}">Recruiter Company Name</label>
                             </div>
                         </div>
                     </div>

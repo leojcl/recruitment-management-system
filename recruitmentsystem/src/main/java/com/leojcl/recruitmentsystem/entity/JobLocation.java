@@ -14,7 +14,7 @@ public class JobLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     private String city;
 
@@ -26,7 +26,7 @@ public class JobLocation {
     }
 
     public JobLocation(Integer id, String city, String state, String country) {
-        Id = id;
+        this.id = id;
         this.city = city;
         this.state = state;
         this.country = country;
