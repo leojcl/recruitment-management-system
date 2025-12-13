@@ -1,16 +1,16 @@
 package com.leojcl.recruitmentsystem.service;
 
 import com.leojcl.recruitmentsystem.entity.*;
+import com.leojcl.recruitmentsystem.exception.ForbiddenException;
+import com.leojcl.recruitmentsystem.exception.ResourceNotFoundException;
 import com.leojcl.recruitmentsystem.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.util.StringUtils.hasText;
 
 @Service
@@ -50,7 +50,8 @@ public class JobPostActivityService {
     }
 
     public JobPostActivity getOne(int id) {
-        return jobPostActivityRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        return jobPostActivityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
     }
 
     public List<JobPostActivity> getAll() {
@@ -66,10 +67,11 @@ public class JobPostActivityService {
 
     @Transactional
     public JobPostActivity updateJob(Integer id, JobPostActivity form, Users currentUser, String locationCity, String companyName) {
-        JobPostActivity job = jobPostActivityRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        JobPostActivity job = jobPostActivityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
         if (job.getPostedById().getUserId() != currentUser.getUserId()) {
-            throw new ResponseStatusException(FORBIDDEN, "Forbidden");
+            throw new ForbiddenException("Forbidden");
         }
 
         job.setJobTitle(form.getJobTitle());
@@ -105,9 +107,10 @@ public class JobPostActivityService {
 
     @Transactional
     public void deleteJob(Integer id, Users currentUser) {
-        JobPostActivity job = jobPostActivityRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        JobPostActivity job = jobPostActivityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
         if (job.getPostedById().getUserId() != currentUser.getUserId()) {
-            throw new ResponseStatusException(FORBIDDEN, "Forbidden");
+            throw new ForbiddenException("Forbidden");
         }
         jobSeekerApplyRepository.deleteByJob(job);
         jobSeekerSaveRepository.deleteByJob(job);

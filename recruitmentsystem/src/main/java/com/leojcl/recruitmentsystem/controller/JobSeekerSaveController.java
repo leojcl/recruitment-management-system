@@ -4,6 +4,7 @@ import com.leojcl.recruitmentsystem.entity.JobPostActivity;
 import com.leojcl.recruitmentsystem.entity.JobSeekerProfile;
 import com.leojcl.recruitmentsystem.entity.JobSeekerSave;
 import com.leojcl.recruitmentsystem.entity.Users;
+import com.leojcl.recruitmentsystem.exception.ResourceNotFoundException;
 import com.leojcl.recruitmentsystem.service.JobPostActivityService;
 import com.leojcl.recruitmentsystem.service.JobSeekerProfileService;
 import com.leojcl.recruitmentsystem.service.JobSeekerSaveService;
@@ -42,10 +43,10 @@ public class JobSeekerSaveController {
             String currentUsername = authentication.getName();
             Users user = userService.findByEmail(currentUsername);
 
-            JobSeekerProfile seekerProfile = jobSeekerProfileService.getOne(user.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+            JobSeekerProfile seekerProfile = jobSeekerProfileService.getOne(user.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
             JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);
-            if (jobPostActivity == null) throw new RuntimeException("Job not found");
+            if (jobPostActivity == null) throw new ResourceNotFoundException("Job not found");
             JobSeekerSave save = new JobSeekerSave();
             save.setUserId(seekerProfile);
             save.setJob(jobPostActivity);

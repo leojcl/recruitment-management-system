@@ -1,6 +1,7 @@
 package com.leojcl.recruitmentsystem.controller;
 
 import com.leojcl.recruitmentsystem.entity.*;
+import com.leojcl.recruitmentsystem.exception.ResourceNotFoundException;
 import com.leojcl.recruitmentsystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -104,7 +105,7 @@ public class JobSeekerApplyController {
                 jobSeekerApply.setJob(jobPostActivity);
                 jobSeekerApply.setApplyDate(new Date());
             } else {
-                throw new RuntimeException("User not found");
+                throw new ResourceNotFoundException("User not found");
             }
             if (jobSeekerApplyService.alreadyApplied(seekerProfile.get(), jobPostActivity)) {
                 return "redirect:/job-details-apply/" + id;

@@ -4,13 +4,14 @@ import com.leojcl.recruitmentsystem.entity.JobPostActivity;
 import com.leojcl.recruitmentsystem.entity.JobSeekerProfile;
 import com.leojcl.recruitmentsystem.entity.RecruiterProfile;
 import com.leojcl.recruitmentsystem.entity.Users;
+import com.leojcl.recruitmentsystem.exception.ForbiddenException;
+import com.leojcl.recruitmentsystem.exception.ResourceNotFoundException;
 import com.leojcl.recruitmentsystem.service.JobPostActivityService;
 import com.leojcl.recruitmentsystem.service.JobSeekerApplyService;
 import com.leojcl.recruitmentsystem.service.JobSeekerSaveService;
 import com.leojcl.recruitmentsystem.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -143,7 +143,7 @@ public class JobPostActivityController {
 
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))) {
             RecruiterProfile recruiter = userService.getCurrentRecruiter()
-                    .orElseThrow(() -> new RuntimeException("Recruiter not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Recruiter not found"));
 
             model.addAttribute("displayName",
                     recruiter.getFirstName() != null && recruiter.getLastName() != null ?
@@ -157,7 +157,7 @@ public class JobPostActivityController {
             model.addAttribute("jobPost", jobs);
             return "dashboard";
         }
-        JobSeekerProfile seeker = userService.getCurrentJobSeeker().orElseThrow(() -> new RuntimeException("Job Seeker not found"));
+        JobSeekerProfile seeker = userService.getCurrentJobSeeker().orElseThrow(() -> new ResourceNotFoundException("Job Seeker not found"));
         model.addAttribute("displayName",
                 seeker.getFirstName() != null && seeker.getLastName() != null ?
                         seeker.getFirstName() + " " + seeker.getLastName() : authentication.getName());
@@ -188,7 +188,7 @@ public class JobPostActivityController {
         Users currentUser = userService.findByEmail(authentication.getName());
 
         if (job.getPostedById().getUserId() != currentUser.getUserId()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "FORBIDDEN");
+            throw new ForbiddenException("FORBIDDEN");
         }
         model.addAttribute("job", job);
 //        model.addAttribute("location");
