@@ -9,17 +9,18 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        UserDetails userDetails =(UserDetails) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String userName = userDetails.getUsername();
-        System.out.println("The username "+ userName + " is logged in.");
-        boolean hasJobSeekerRole =  authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Job Seeker"));
-        boolean hasRecruiterRole =  authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("Recruiter"));
-        if(hasRecruiterRole || hasJobSeekerRole){
+        System.out.println("The username " + userName + " is logged in.");
+        boolean hasJobSeekerRole = authentication.getAuthorities().stream().anyMatch(r -> Objects.equals(r.getAuthority(), "JobSeeker"));
+        boolean hasRecruiterRole = authentication.getAuthorities().stream().anyMatch(r -> Objects.equals(r.getAuthority(), "Recruiter"));
+        if (hasRecruiterRole || hasJobSeekerRole) {
             response.sendRedirect("/dashboard");
         }
     }

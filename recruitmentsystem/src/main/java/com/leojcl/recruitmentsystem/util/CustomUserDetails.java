@@ -15,6 +15,7 @@ public class CustomUserDetails implements UserDetails {
 
 
     private final Users user;
+
     public CustomUserDetails(Users user) {
         this.user = user;
     }
@@ -54,6 +55,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isActive();
     }
 }

@@ -1,3 +1,26 @@
+### Application secrets / local configs ###
+.env
+.env.*
+*.env
+src/main/resources/application-local.properties
+src/main/resources/application-local.yml
+src/main/resources/application-prod.properties
+src/main/resources/application-prod.yml
+
+### Logs ###
+*.log
+logs/
+log/
+
+### OS files ###
+.DS_Store
+Thumbs.db
+
+### Upload / runtime files 
+uploads/
+data/
+tmp/
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
