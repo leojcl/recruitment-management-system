@@ -59,7 +59,10 @@
 
         <label class="nav-item nav-link px-2 me-3">Guest</label>
 
-        <button class="myBtn-light me-5" onclick="window.location.href='/logout'">Logout</button>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="myBtn-light me-5">Logout</button>
+        </form>
+<!--        <button class="myBtn-light me-5" onclick="window.location.href='/logout'">Logout</button>-->
     </div>
 </header>
 <section class="section">
