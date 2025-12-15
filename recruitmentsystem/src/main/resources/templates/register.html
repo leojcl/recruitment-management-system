@@ -17,7 +17,7 @@
     <link
             href="https://fonts.googleapis.com/css?family=Montserrat"
             rel="stylesheet"/>
-    <meta charset="ISO-8859-1"/>
+    <meta charset="UTF-8"/>
     <title>Sign Up</title>
     <style>
         .register-layout {
@@ -42,7 +42,7 @@
 <section class="content hidden-overflow">
     <div class="register-layout">
 
-        <!-- BÊN TRÁI -->
+        <!-- BÃŠN TRÃI -->
         <div class="register-left coffee_mug_background">
             <div class="logo_left mt-3 pt-4 ms-5 pl-5">
                 <h2 class="logo" style="color: white">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- BÊN PH?I (FORM) -->
+        <!-- BÃŠN PH?I (FORM) -->
         <div class="register-right d-flex align-items-center">
             <div class="register-right-inner">
 
@@ -63,7 +63,7 @@
 
                 <div class="myForm">
                     <form th:action="@{/register/new}"
-                          th:object="${user}"
+                          th:object="${form}"
                           method="post">
 
                         <!-- Error message -->
@@ -83,7 +83,6 @@
                                     <div class="form-group">
                                         <input
                                                 placeholder="Email"
-                                                name="email"
                                                 th:field="*{email}"
                                                 type="email"
                                                 style="width: 100%"
@@ -97,9 +96,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input
-                                                min="8"
+                                                minlength="8"
                                                 placeholder="Password"
-                                                name="password"
                                                 th:field="*{password}"
                                                 type="password"
                                                 style="width: 100%"
@@ -108,13 +106,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input
+                                                minlength="8"
+                                                placeholder="Confirm Password"
+                                                th:field="*{password}"
+                                                type="password"
+                                                style="width: 100%"
+                                                class="form-control pwd"
+                                                required/>
+                                        <div class="text-danger" th:errors="*{confirmPassword}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-danger" th:errors="*{passwordConfirmed}"></div>
 
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <select
                                             required
                                             class="form-control"
-                                            th:field="*{userType}">
+                                            th:field="*{userTypeId}">
+                                        <option value="" disabled selected>-- Select user type --</option>
                                         <th:block th:each="userType :${getAllTypes}">
                                             <option
                                                     th:text="${userType.userTypeName}"

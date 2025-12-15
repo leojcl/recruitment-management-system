@@ -1,57 +1,123 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Login LeoJCL Jobs</title>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
-    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
-    <meta charset="ISO-8859-1">
-</head>
-<body class="background">
-<nav class="main_div">
-    <div class="logo_left">
-        <label class="logo_com">
-            LeoJCL
-        </label>
-    </div>
-    <div class="logo_right">
-        <label class="Candidate_login_btn">
-            <a th:href="@{/login}">
-                Job Candidate Login
-            </a>
-            <a th:href="@{/register}">
-                /Register
-            </a>
-        </label>
-        <label class="Recruiter_login_btn">
-            <a th:href="@{/login}">
-                Recruiter Login
-            </a>
-            <a th:href="@{/register}">
-                /Register
-            </a>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-        </label>
+    <title>LeoJCL | Find jobs fast</title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:rel="stylesheet"
+          th:href="@{/webjars/font-awesome/css/all.min.css}"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+    <style>
+        body {
+            min-height: 100vh;
+        }
+
+        .page-bg {
+            min-height: 100vh;
+            background: radial-gradient(1000px 500px at 20% 10%, rgba(13, 110, 253, .18), transparent 55%),
+            radial-gradient(900px 500px at 85% 30%, rgba(220, 53, 69, .14), transparent 60%),
+            #0b1220;
+            color: #fff;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+        }
+
+        .muted {
+            color: rgba(255, 255, 255, .75);
+        }
+
+        .brand a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body class="page-bg">
+
+<!-- TOP NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3">
+    <div class="container">
+        <div class="brand fw-bold fs-4">
+            <a th:href="@{/}">LeoJCL<span>.com</span></a>
+        </div>
+
+        <div class="ms-auto d-flex gap-2 flex-wrap">
+            <a class="btn btn-outline-light btn-sm" th:href="@{/login}">Candidate Login</a>
+            <a class="btn btn-outline-light btn-sm" th:href="@{/login}">Recruiter Login</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/register}">Create account</a>
+        </div>
     </div>
 </nav>
-<form th:action="@{/global-search/}">
-    <div class="searchBox">
-        <div class="inner">
 
-            <input type="text" placeholder="Search for a job" name="job" th:value="${job}"/>
-            <input type="text" placeholder="Enter a location" name="location" th:value="${location}"/>
-            <button type="submit"><i class="fa fa-search"></i></button>
+<!-- CENTER HERO + GLOBAL SEARCH -->
+<main class="container d-flex align-items-center" style="min-height: calc(100vh - 140px);">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold mb-2">Find your next opportunity</h1>
+                <p class="lead muted mb-0">Search by title/keyword and location. Apply with confidence.</p>
+            </div>
+
+            <div class="glass p-4 p-md-5">
+                <form th:action="@{/global-search/}" method="get"
+                      class="row g-3 align-items-end">
+
+                    <div class="col-12 col-md-7">
+                        <label class="form-label">Job title / keyword</label>
+                        <input class="form-control form-control-lg"
+                               type="text"
+                               name="job"
+                               th:value="${job}"
+                               placeholder="e.g. Java Backend, Spring Boot..."
+                               autocomplete="off"/>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <label class="form-label">Location</label>
+                        <input class="form-control form-control-lg"
+                               type="text"
+                               name="location"
+                               th:value="${location}"
+                               placeholder="e.g. Ho Chi Minh, Hanoi, Remote..."
+                               autocomplete="off"/>
+                    </div>
+
+                    <div class="col-12 col-md-2 d-grid">
+                        <button class="btn btn-primary btn-lg h-100"
+                                type="submit"
+                                aria-label="Search jobs">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i>Search
+                        </button>
+                    </div>
+
+                    <div class="col-12">
+                        <small class="muted">Tip: Leave location empty to search globally.</small>
+                    </div>
+
+                </form>
+            </div>
 
         </div>
     </div>
-</form>
-<footer>
-    <label class="copy-right">Copyright © hotdevjobs.com</label>
-</footer>
+</main>
+
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
 </body>
-
-<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-
 </html>

@@ -10,12 +10,16 @@ public class RegisterFormDto {
     @Size(max = 100, message = "Email tối đa 100 ký tự")
     private String email;
 
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = "Mật khẩu phải có chữ và số"
+    )
     @NotBlank(message = "Mật khẩu không được để trống")
-    @Size(min = 6, max = 100, message = "Mật khẩu từ 6-100 ký tự")
+    @Size(min = 8, max = 100, message = "Mật khẩu từ 6-100 ký tự")
     private String password;
 
     @NotBlank(message = "Xác nhận mật khẩu không được để trống")
-    @Size(min = 6, max = 100, message = "Xác nhận mật khẩu từ 6-100 ký tự")
+    @Size(min = 8, max = 100, message = "Xác nhận mật khẩu từ 6-100 ký tự")
     private String confirmPassword;
 
     @NotNull(message = "Loại người dùng là bắt buộc")

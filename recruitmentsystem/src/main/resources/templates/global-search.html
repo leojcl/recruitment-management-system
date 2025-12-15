@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
     <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
 
 </head>
@@ -209,7 +209,7 @@
                 <input id="job" class="radius-left" type="text" placeholder="Search for a job" name="job"
                        th:value="${job}"/>
                 <input id="loc" class="" type="text" placeholder="Job Location" name="location" th:value="${location}"/>
-                <button class="radius-right" type="submit" form="myForm"><i class="fa fa-search"></i></button>
+                <button class="radius-right" type="submit" form="myForm"><i class="fa fa-search">Search</i></button>
             </div>
         </div>
 
@@ -263,7 +263,7 @@
 ></script>
 <script
         type="text/javascript"
-        th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
+        th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"
 ></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 
