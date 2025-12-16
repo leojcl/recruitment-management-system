@@ -57,3 +57,20 @@ Tech stack:
 - Kafka(event-drivent, async processing)
 - Resilience4j(reliability, timeout/retry/circuit breaker)
 - Docker compose
+
+Phase 1: Search 
+**Mục tiêu:** người dùng tìm job nhanh bằng search tốt → nền để AI gọi search về sau
+
+### Deliverables
+
+- Full-text search (title/description/skills/company)
+- Facets/filter: location, level, salary range, remote/onsite
+- Ranking cơ bản 
+
+### Tech stack 
+
+- **Elasticsearch** 
+- Spring Boot integration:
+    - Dễ nhất: **Spring Data Elasticsearch** 
+    - Mạnh hơn: **Elasticsearch Java API Client** 
+- **Docker Compose** để chạy ES + DB local
