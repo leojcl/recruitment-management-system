@@ -189,7 +189,7 @@
                             </div>
                         </div>
 
-                        <div class="row gutters" sec:authorize="hasAuthority('Job Seeker')">
+                        <div class="row gutters" sec:authorize="hasAuthority('JobSeeker')">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="text-left mt-2">
                                     <button
@@ -203,7 +203,7 @@
                         </div>
 
                         <div class="row mt-2">
-                            <div class="col-md-5 me-5" sec:authorize="hasAuthority('Job Seeker')">
+                            <div class="col-md-5 me-5" sec:authorize="hasAuthority('JobSeeker')">
                                 <label class="heading_font font_sub_heading_color">
                                     Profile Photo</label>
                                 <input
@@ -219,7 +219,7 @@
                                 <label class="heading_font font_sub_heading_color">
                                     Resume</label>
                                 <input
-                                        sec:authorize="hasAuthority('Job Seeker')"
+                                        sec:authorize="hasAuthority('JobSeeker')"
                                         type="file"
                                         name="pdf"
                                         class="form-control"
@@ -234,7 +234,7 @@
                         </div>
 
                         <div class="row mt-3 col d-flex justify-content-center"
-                             sec:authorize="hasAuthority('Job Seeker')">
+                             sec:authorize="hasAuthority('JobSeeker')">
                             <div class="text-right">
                                 <button
                                         type="submit"
