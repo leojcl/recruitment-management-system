@@ -40,16 +40,16 @@
         <ul class="navbar-nav m-auto mt-2 mt-lg-0">
 
             <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Job Seeker')" class="nav-link" th:href="@{/dashboard}"
+                <a sec:authorize="hasAuthority('JobSeeker')" class="nav-link" th:href="@{/dashboard}"
                 ><i class="fas fa-search"></i>Search for Jobs</a
                 >
             </li>
             <li class="nav-item active">
-                <a sec:authorize="hasAuthority('Job Seeker')" class="nav-link" th:href="@{/saved-jobs/}">
+                <a sec:authorize="hasAuthority('JobSeeker')" class="nav-link" th:href="@{/saved-jobs/}">
                     <i class="fa-solid fa-eye"></i>View Saved Jobs</a>
             </li>
             <li class="nav-item ">
-                <a sec:authorize="hasAuthority('Job Seeker')" class="nav-link" th:href="@{/job-seeker-profile/}">
+                <a sec:authorize="hasAuthority('JobSeeker')" class="nav-link" th:href="@{/job-seeker-profile/}">
                     <i class="fa-solid fa-pencil"></i>Edit Profile</a>
             </li>
         </ul>
@@ -72,7 +72,7 @@
 </header>
 <section class="section">
     <div class="sidenav px-5">
-        <div sec:authorize="hasAuthority('Job Seeker')">
+        <div sec:authorize="hasAuthority('JobSeeker')">
             <hr/>
 
         </div>
@@ -96,7 +96,7 @@
                                     [[${jobPost.jobTitle}]]
                                     <span class="title-span" sec:authorize="hasAuthority('Recruiter')"
                                           th:text="'('+ @{${jobPost.totalCandidates}}+' Candidates Applied)'">(xx candidates applied)</span>
-                                    <span class="title-span" sec:authorize="hasAuthority('Job Seeker')"
+                                    <span class="title-span" sec:authorize="hasAuthority('JobSeeker')"
                                           th:if="${jobPost.isActive == true}">(Applied)</span>
 
                                 </label>

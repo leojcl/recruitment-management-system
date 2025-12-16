@@ -80,6 +80,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(2)
         // 2) WEB: stateful + formLogin + CSRF on
     SecurityFilterChain webSecurity(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         http
