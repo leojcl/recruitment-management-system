@@ -74,3 +74,6 @@ Phase 1: Search
     - Dễ nhất: **Spring Data Elasticsearch** 
     - Mạnh hơn: **Elasticsearch Java API Client** 
 - **Docker Compose** để chạy ES + DB local
+
+modify location, state, country, company with a select type 
+modify candidates applied -> job-details-apply 
