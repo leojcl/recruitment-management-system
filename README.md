@@ -77,3 +77,8 @@ Phase 1: Search
 
 modify location, state, country, company with a select type 
 modify candidates applied -> job-details-apply 
+
+run docker compose up -d 
+
+ES: http://localhost:9200 
+Kibana: http://localhost:5601
