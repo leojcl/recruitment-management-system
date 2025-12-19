@@ -19,7 +19,7 @@ public class AdminSearchController {
 
     private final JobPostActivityRepository jobPostActivityRepository;
     private final JobSearchRepository jobSearchRepository;
-
+    
 
     @PostMapping("/reindex")
     public String reindexAllJobs() {
