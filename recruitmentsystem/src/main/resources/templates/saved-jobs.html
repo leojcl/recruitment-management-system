@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
     <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
 </head>
 
@@ -79,8 +81,8 @@
     </div>
 
     <article>
-
-        <div class="box">
+        <div class="box px-3">
+            <div th:replace="fragments/back-link :: backLink"></div>
             <h1 class="primary-title">Saved Jobs</h1>
         </div>
 
@@ -116,26 +118,15 @@
 
     </article>
 
-
 </section>
 
 <!--/ bradcam_area  -->
-
-
-<script
-        type="text/javascript"
-        th:src="@{/webjars/jquery/jquery.min.js}"
-></script>
-<script
-        type="text/javascript"
-        th:src="@{/webjars/popper.js/umd/popper.min.js}"
-></script>
-<script
-        type="text/javascript"
-        th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
-></script>
+<script type="text/javascript" th:src="@{/summernote/summernote-lite.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
-
+<script src="/js/back-link.js"></script>
 <script>
 
     $('#job').change(function() {

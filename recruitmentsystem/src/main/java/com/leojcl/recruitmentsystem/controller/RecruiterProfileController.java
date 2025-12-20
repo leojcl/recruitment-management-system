@@ -43,7 +43,7 @@ public class RecruiterProfileController {
             Optional<RecruiterProfile> recruiterProfile = recruiterProfileService.getOne(user.getUserId());
             recruiterProfile.ifPresent(profile -> model.addAttribute("profile", profile));
         }
-        return "recruiter_profile";
+        return "recruiter-profile";
 
     }
 

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit Job</title>
 
-    <!-- CSS (tùy theo project, bạn giữ nguyên như các trang khác) -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <link rel="stylesheet" th:href="@{/summernote/summernote-lite.min.css}"/>
@@ -25,8 +24,6 @@
             <!-- Form Update Job -->
             <form th:action="@{'/jobs/' + ${job.jobPostId}}" th:object="${job}" method="post"
                   class="card p-4 shadow-sm mb-3">
-                <!-- Nếu bạn cấu hình method override, bỏ comment dòng dưới -->
-                <!-- <input type="hidden" name="_method" value="PUT" /> -->
                 <input type="hidden" th:field="*{jobPostId}"/>
 
                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
@@ -42,7 +39,6 @@
 
                 <div class="mb-3">
                     <label class="form-label">Job Description</label>
-                    <!-- Nếu dùng WYSIWYG, Summernote sẽ khởi tạo trên textarea này -->
                     <textarea class="form-control" th:field="*{descriptionOfJob}" rows="8"
                               placeholder="Enter job description"></textarea>
                     <div class="text-danger small" th:if="${#fields.hasErrors('descriptionOfJob')}"
@@ -121,8 +117,9 @@
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/summernote/summernote-lite.min.js}"></script>
+<script src="/js/back-link.js"></script>
 <script>
-    // Khởi tạo Summernote nếu cần (chỉ khi bạn muốn WYSIWYG cho mô tả)
+
     $(function () {
         if ($('textarea[name="descriptionOfJob"]').length && $.fn.summernote) {
             $('textarea[name="descriptionOfJob"]').summernote({

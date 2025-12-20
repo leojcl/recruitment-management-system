@@ -9,7 +9,6 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.min.css}"/>
@@ -20,12 +19,9 @@
 <body th:object="${jobDetails}" style="font-family: 'Montserrat';height: 100%">
 
 <header class="navbar navbar-expand-lg navbar-dark">
-    <label class="mt-2 ms-5 font-weight-bold h5"
-    ><a th:href="@{/dashboard}">LeoJCL</a
-    ><span class="logo_com font-weight-bold h5" style="color: white">
-          .com</span
-    ></label
-    >
+    <label class="mt-2 ms-5 font-weight-bold h5"><a th:href="@{/dashboard}">LeoJCL</a><span
+            class="logo_com font-weight-bold h5" style="color: white">
+          .com</span></label>
     <button
             class="navbar-toggler"
             type="button"
@@ -33,8 +29,7 @@
             data-target="#navbarTogglerDemo02"
             aria-controls="navbarTogglerDemo02"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-    >
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -43,8 +38,7 @@
 
             <li class="nav-item active">
                 <a sec:authorize="hasAuthority('JobSeeker')" class="nav-link" th:href="@{/dashboard}"
-                ><i class="fas fa-search"></i>Search for Jobs</a
-                >
+                ><i class="fas fa-search"></i>Search for Jobs</a>
             </li>
             <li class="nav-item ">
                 <a sec:authorize="hasAuthority('JobSeeker')" class="nav-link" th:href="@{/saved-jobs/}">
@@ -57,18 +51,15 @@
 
             <li class="nav-item ">
                 <a sec:authorize="hasAuthority('Recruiter')" class="nav-link" th:href="@{/dashboard/add}"
-                ><i class="fa-solid fa-file-circle-plus"></i>Post New Job</a
-                >
+                ><i class="fa-solid fa-file-circle-plus"></i>Post New Job</a>
             </li>
             <li class="nav-item active">
                 <a sec:authorize="hasAuthority('Recruiter')" class="nav-link" th:href="@{/dashboard}"
-                > <i class="fa-solid fa-eye"></i>View Your Jobs</a
-                >
+                > <i class="fa-solid fa-eye"></i>View Your Jobs</a>
             </li>
             <li class="nav-item ">
                 <a sec:authorize="hasAuthority('Recruiter')" class="nav-link" th:href="@{/recruiter-profile/}"
-                > <i class="fa-solid fa-pencil"></i>Edit Account</a
-                >
+                > <i class="fa-solid fa-pencil"></i>Edit Account</a>
             </li>
 
         </ul>
@@ -77,8 +68,7 @@
                 height="50px"
                 width="50"
                 th:if="${avatarPath != null}"
-                th:src="@{${avatarPath}}"
-        />
+                th:src="@{${avatarPath}}"/>
         <label th:text="${displayName != null ? displayName : username}" class="nav-item nav-link px-2 me-3">John
             Doe</label>
 
@@ -100,8 +90,7 @@
     </div>
     <article>
         <div class="box px-3">
-            <a class="mt-3 ms-3 primary" id="back-link"><i class="fa-solid fa-angle-left me-1"></i> Back to Search
-                Results </a>
+            <div th:replace="fragments/back-link :: backLink"></div>
             <h1 class="primary-title mt-3"> Job Details </h1>
             <div class="ms-3">
                 <h4 th:text="${jobDetails.jobTitle}" class="job-title text-left">Software Engineer</h4>
@@ -219,13 +208,14 @@
 <script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
-<script>
-    var element = document.getElementById('back-link');
-    element.setAttribute('href', document.referrer);
-    element.onclick = function () {
-        history.back();
-        return false;
-    }
-</script>
+<script src="/js/back-link.js"></script>
+<!--<script>-->
+<!--    var element = document.getElementById('back-link');-->
+<!--    element.setAttribute('href', document.referrer);-->
+<!--    element.onclick = function () {-->
+<!--        history.back();-->
+<!--        return false;-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>
